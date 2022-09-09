@@ -1,0 +1,40 @@
+% @Author: WU Zihan
+% @Date:   2022-09-09 10:27:47
+% @Last Modified by:   WU Zihan
+% @Last Modified time: 2022-09-09 15:14:13
+
+\section*{Queueing Modeling}
+
+The arrival of transactions to the system can be regarded as a Poisson process with parameter \(\lambda\). 
+The transactions are divided into two parts, intra-shard transactions and cross-shard transactions. 
+For a balanced sharding scheme, the probability of a transaction involving $n$ accounts being an intra-shard transaction can be calculated as 
+\[\operatorname{P}_{\rm intra} = \cfrac{1}{k^{n-1}}.\]
+Thus, the arrival rate of intra-shard transactions \(\lambda_{\rm int}\) and cross-shard transactions \(\lambda_{\rm cr}\)
+can be determined by 
+\begin{align*}
+    \lambda_{\rm int} &= \lambda \operatorname{P}_{\rm intra} = \cfrac{\lambda}{k^{n-1}}; \\
+    \lambda_{\rm cr} &= \lambda \left(1- \operatorname{P}_{\rm intra}\right) = \lambda\left(1-\cfrac{1}{k^{n-1}}\right).
+\end{align*}
+Suppose that on average, the number of the input accounts is $x$. Then the rate of generating the first-phase subtransactions is
+\[\lambda_{\rm sub_1} = x \lambda_{\rm cr} = x \lambda\left(1-\cfrac{1}{k^{n-1}}\right).\]
+
+Now consider an arbitrary shard $i \in \{1,2,\cdots ,k\}$. 
+The mining process of shard $i$ is modelled as an $M/M/1$ queue.
+Due to the homogeneity assumption of those shards, one can denote the service rate of each shard as $\mu$ and 
+the shards share the same arrival rate, denoted by $\lambda_0$.
+
+When the system attains its statistical equilibrium, as shown in \cite{bhat2008IntroductionQueueingTheory}, pp. 42, the
+departure process of a $M/M/1$ queue is the same Poisson as the arrival process, from which we can deduct that
+the rate of generating the second-phase subtransactions $\lambda_{\rm sub_2}$ satisfies that
+\[\lambda_{\rm sub_2} = (n-x) \lambda_{\rm sub_1} = (n-x)x \lambda\left(1-\cfrac{1}{k^{n-1}}\right).\]
+Notice that, $\lambda_{\rm sub_2}$ also serves as an input sequence. 
+So for shard $i$, along with the homogeneous assumption, we have 
+
+\begin{align*}
+    \lambda_0 &= \frac{\lambda_{\rm int} + \lambda_{\rm cr}+ \lambda_{\rm sub_2}}{k} \\ &= \left[\frac{1}{k^n}+x(1+n-x)\left(\frac{1}{k}-\frac{1}{k^n}\right)\right].
+\end{align*}
+
+Now we can calculate the expectation of the waiting time $W_q$ as \cite{bhat2008IntroductionQueueingTheory}, pp.
+\begin{align*}
+    W_q &= \frac{1}{\lambda_0 - \mu } - \frac{1}{\mu} \\ 
+\end{align*}

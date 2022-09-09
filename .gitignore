@@ -36,7 +36,7 @@
 *.fdb_latexmk
 *.synctex
 *.synctex(busy)
-*.synctex.gz
+# *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
 
@@ -240,3 +240,6 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+# Mac OS
+.DS_Store
