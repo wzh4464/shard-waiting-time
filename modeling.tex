@@ -1,7 +1,7 @@
 % @Author: WU Zihan
 % @Date:   2022-09-09 10:27:47
 % @Last Modified by:   WU Zihan
-% @Last Modified time: 2022-09-09 15:14:13
+% @Last Modified time: 2022-09-09 22:54:47
 
 \section*{Queueing Modeling}
 
@@ -31,10 +31,23 @@ Notice that, $\lambda_{\rm sub_2}$ also serves as an input sequence.
 So for shard $i$, along with the homogeneous assumption, we have 
 
 \begin{align*}
-    \lambda_0 &= \frac{\lambda_{\rm int} + \lambda_{\rm cr}+ \lambda_{\rm sub_2}}{k} \\ &= \left[\frac{1}{k^n}+x(1+n-x)\left(\frac{1}{k}-\frac{1}{k^n}\right)\right].
+    \lambda_0(k) &= \frac{\lambda_{\rm int} + \lambda_{\rm cr}+ \lambda_{\rm sub_2}}{k} \\ &= \frac{1}{k^n}+x(1+n-x)\left(\frac{1}{k}-\frac{1}{k^n}\right).
 \end{align*}
-
-Now we can calculate the expectation of the waiting time $W_q$ as \cite{bhat2008IntroductionQueueingTheory}, pp.
+Consider the growth of $\lambda_0$, we have
 \begin{align*}
-    W_q &= \frac{1}{\lambda_0 - \mu } - \frac{1}{\mu} \\ 
+    &\lambda_0(k+1)-\lambda_0(k)  \\ &= \cfrac{-B_{n,x}(k+1)^{n-1}k^{n-1}+(B_{n,x}-1)\left[(k+1)^n-k^n\right]}{(k+1)^nk^n} < 0 
 \end{align*}
+as $k\to \infty$, where $B_{n,x}=x(1+n-x)>0$. This indicates that when $k$ is sufficiently large, $\lambda_0$ will decrease as $k$ gets bigger.
+
+
+Now we can calculate the expectation of the waiting time $W_q$ as \cite{bhat2008IntroductionQueueingTheory}, pp. 37,
+\begin{align*}
+    W_q &= \frac{1}{\mu - \lambda_0} - \frac{1}{\mu} \\ 
+\end{align*}
+If we consider the variation of $W_q$ with $\lambda_0$,
+\begin{align*}
+    \cfrac{\mathrm{d}W_q}{\mathrm{d}\lambda_0} = \cfrac{1}{(\mu - \lambda_0)^2} > 0
+\end{align*}
+So minimizing $W_q$ is the same to minimize $\lambda_0$. And since we have known that when $k$ is sufficiently large,
+$\lambda_0$ decrease as $k$ tends to infinity, one can conclude that if we want to shorten the waiting time $W_q$, we only need to
+increase the number of shards, i.e. integer $k$.
